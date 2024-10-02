@@ -8,7 +8,7 @@ function J_R = jointToRotJac(q)
   C45 = roty((360/2/pi) * q(5));
   C56 = rotx((360/2/pi) * q(6));
 
-  %Rotation axes in 0 frame
+  %Rotation axes in 0-frame
   n1 = [0;0;1];
   n2 = C01 * [0;1;0];
   n3 = C01 * C12 * [0;1;0];
@@ -22,7 +22,7 @@ function J_R = jointToRotJac(q)
 end
 
 
-% %Rotation Vactors in joint frames
+% %Rotation Vectors in joint frames
 %   n1 = [0;0;1;1];
 %   n2 = [0;1;0;1];
 %   n3 = [0;1;0;1];

@@ -1,7 +1,7 @@
 function J_P = jointToPosJac(q)
   
   
-  %Rotation Axis 
+  %Rotation Axes in 0-frame, reuse jointToRotJac(q) because it contains all Axes
   J_R = jointToRotJac(q);
   
   n1 = J_R(:,1);
@@ -12,7 +12,7 @@ function J_P = jointToPosJac(q)
   n6 = J_R(:,6);
 
 
-  %R Vectors
+  %R Vectors from 0 to k in 0-frame from Homogenous Transformation matrices
   r1 = jointToTransform01(q)*[0;0;0;1]; 
   r2 = jointToTransform01(q)*jointToTransform12(q)*[0;0;0;1];
   r3 = jointToTransform01(q)*jointToTransform12(q)*jointToTransform23(q)*[0;0;0;1];
@@ -27,7 +27,7 @@ function J_P = jointToPosJac(q)
   r5=r5(1:3);
   r6=r6(1:3);
 
-  %R k-end
+  %R Vectors from k to end in 0-frame
   r1E = r6-r1;
   r2E = r6-r2;
   r3E = r6-r3;
@@ -35,7 +35,7 @@ function J_P = jointToPosJac(q)
   r5E = r6-r5;
   r6E = r6-r6;
 
-  % Compute the translational jacobian.
+  % Compute the translatory jacobian
   J_P = [cross(n1,r1E) cross(n2,r2E) cross(n3,r3E) cross(n4,r4E) cross(n5,r5E) cross(n6,r6E)];
     
 end
