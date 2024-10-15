@@ -1,6 +1,4 @@
-function quat_AC = quatMult_solution(quat_AB,quat_BC)
-  % Input: two quaternions to be multiplied
-  % Output: output of the multiplication
+function quat_AC = quatMult(quat_AB,quat_BC)
   q = quat_AB;
   p = quat_BC;
   
