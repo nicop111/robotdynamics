@@ -9,5 +9,5 @@ function I_r_IE = jointToPosition_solution(q)
            jointToTransform45_solution(q)*...
            jointToTransform56_solution(q)*...
            getTransform6E_solution();
-  I_r_IE = T_IE(1:3,4);
+    I_r_IE = T_IE(1:3,4);
 end
