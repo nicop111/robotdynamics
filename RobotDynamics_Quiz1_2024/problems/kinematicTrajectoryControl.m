@@ -27,9 +27,17 @@ function [ Dq ] = kinematicTrajectoryControl( q, p_base_des, params )
   trayJacobian = jointToTrayJacobian_solution(q,params);
   trayJacobianInverse = pseudoInverseMat_solution(trayJacobian, lambda);
     
-  baseN = eye(6) - baseJacobianInverse*baseJacobian;
-  trayN = eye(6) - trayJacobianInverse*trayJacobian;
+  trayNull = eye(6) - trayJacobianInverse*trayJacobian; %Tray nullspace
 
-  %tray must be prioritized
-  Dq = trayN*pseudoInverseMat_solution(baseJacobian*trayN, lambda)*p_base_des; 
+  % Compute recent base pose from q
+  T_IB = jointToBasePose(q, params);
+  thata = q(3);
+  p_base = [T_IB(1:2,4); thata];
+
+  w_star_tray = [0; 0; 0];
+  w_star_base = p_base_des - p_base;
+
+  %Tray must be prioritized --> project the desired base pose to the tray nullspace
+  Dq = trayJacobianInverse * w_star_tray + trayNull*pseudoInverseMat_solution(baseJacobian*trayNull, lambda)*(w_star_base - baseJacobian*trayJacobianInverse*w_star_tray); 
+  Dq = K_p*Dq;
 end
